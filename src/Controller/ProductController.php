@@ -16,39 +16,37 @@ class ProductController extends AbstractController
      */
     public function category($slug, CategoryRepository $categoryRepository): Response
     {
-		$category = $categoryRepository->findOneBy([
-			'slug' => $slug
-		]);
+        $category = $categoryRepository->findOneBy([
+            'slug' => $slug
+        ]);
 
-		if(!$category)
-		{
-			throw $this->createNotFoundException("La catégorie demandée n'existe pas");
-		}
-		
+        if (!$category) {
+            throw $this->createNotFoundException("La catégorie demandée n'existe pas");
+        }
+        
         return $this->render('product/category.html.twig', [
             'slug' => $slug,
-			'category' => $category
+            'category' => $category
         ]);
     }
 
-	/**
+    /**
      * @Route("/{category_slug}/{slug}", name="product_show")
      */
     public function show($slug, ProductRepository $productRepository): Response
     {
-		$product = $productRepository->findOneBy([
-			'slug' => $slug
-		]);
+        $product = $productRepository->findOneBy([
+            'slug' => $slug
+        ]);
 
 
-		if(!$product)
-		{
-			throw $this->createNotFoundException("Le produit demandé n'existe pas");
-		}
-		
+        if (!$product) {
+            throw $this->createNotFoundException("Le produit demandé n'existe pas");
+        }
+        
         return $this->render('product/show.html.twig', [
             'slug' => $slug,
-			'product' => $product
+            'product' => $product
         ]);
     }
 }
