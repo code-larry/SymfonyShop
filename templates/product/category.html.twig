@@ -5,8 +5,11 @@
 {% endblock title %}
 
 {% block body %}
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item"><a href="#">Accueil</a></li>
+		<li class="breadcrumb-item"><a href="#">{{ category.name }}</a></li>
+	</ol>
 	<h1>Catégorie : {{ category.name }}</h1>
-
 	<div class="row">
 		{% for product in category.products %}
 		<div class="col-3">
