@@ -40,7 +40,6 @@ class ProductController extends AbstractController
 			'slug' => $slug
 		]);
 
-		// dd($product);
 
 		if(!$product)
 		{
