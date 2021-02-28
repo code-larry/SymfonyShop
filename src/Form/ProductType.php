@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Product;
 use App\Entity\Category;
+use App\Form\DataTransformer\CentimesTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -51,7 +52,10 @@ class ProductType extends AbstractType
 					return strtoupper($category->getName());
 				}
 			]);
-        ;
+
+		// Transformation du prix en euro avant affichage et en centimes avant enregistrement en DB
+		// En utilisant l'option divisor de MoneyType, nous pouvons éviter de créer ce Transformer
+		$builder->get('price')->addModelTransformer(new CentimesTransformer);
     }
 
     public function configureOptions(OptionsResolver $resolver)
