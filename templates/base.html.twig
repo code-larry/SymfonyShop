@@ -9,13 +9,20 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css">
 		{% endblock %}
 
-        {% block javascripts %}{% endblock %}
     </head>
     <body>
 		{% include "partials/_navbar.html.twig" %}
 
 		<div class="container pt-5">
+			{% for rubrique, messages in app.flashes %}
+				<div class="alert alert-{{rubrique}}">
+					{% for message in messages %}
+						<p>{{ message }}</p>
+					{% endfor %}
+				</div>
+			{% endfor %}
 			{% block body %}{% endblock %}
-		</div>   
+		</div> 
+		{% block javascripts %}{% endblock %}  
     </body>
 </html>
