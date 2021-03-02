@@ -21,15 +21,10 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
-            
             logout:
-              path: security_logout
-
-            # form_login:
-            #   login_path: security_login
-            #   check_path: security_login
-            #   username_parameter: login[email]
-            #   password_parameter: login[password]
+                path: security_logout
+                # where to redirect after logout
+                target: homepage
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
