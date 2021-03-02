@@ -11,7 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ProductController extends AbstractController
 {
@@ -59,6 +61,11 @@ class ProductController extends AbstractController
 	public function edit($id, ProductRepository $productRepository, Request $request, SluggerInterface $slugger, EntityManagerInterface $em)
 	{
 		$product = $productRepository->find($id);
+
+		if(!$product)
+		{
+			throw new NotFoundHttpException("Ce produit n'existe pas.");
+		}
 
 		$form = $this->createForm(ProductType::class, $product);
 

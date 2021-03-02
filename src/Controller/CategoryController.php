@@ -10,7 +10,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CategoryController extends AbstractController
 {
@@ -47,6 +50,14 @@ class CategoryController extends AbstractController
     public function edit($id, SluggerInterface $slugger, CategoryRepository $categoryRepository, Request $request, EntityManagerInterface $em): Response
     {
 		$category = $categoryRepository->find($id);
+
+		if(!$category)
+		{
+			throw new NotFoundHttpException("Cette catégorie n'existe pas.");
+		}
+
+		// Used with our CategoryVoter
+		// $this->denyAccessUnlessGranted('CAN_EDIT', $category, "Vous n'êtes pas le propriétaire ou n'avez pas le rôle ADMIN de cette catégorie.");
 
 		$form = $this->createForm(CategoryType::class, $category);
 
