@@ -12,7 +12,7 @@
 	<h1>Catégorie : {{ category.name }}</h1>
 	<div class="row">
 		{% for product in category.products %}
-		<div class="col-3">
+		<div class="col-4 d-flex align-items-stretch mb-3">
 			{% include "product/_product_card.html.twig" %}
 		</div>
 		{% endfor %}
