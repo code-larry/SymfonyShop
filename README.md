@@ -15,6 +15,11 @@ I'm building this eshop from scratch to improve my skills.
 
 - Twig
 - Bootstrap
+- JavaScript
+
+### Payment
+
+- Stripe API
 
 ## Project Setup
 
@@ -31,3 +36,5 @@ Setup your .env.local with your database credentials and run:
 Eventually, you can load fixtures if you wish to populate your database:
 
 `php bin/console doctrine:fixtures:load`
+
+To use Stripe, you need to create your own account and get your public and secret key.
