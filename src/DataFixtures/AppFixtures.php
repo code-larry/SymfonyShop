@@ -8,6 +8,7 @@ use App\Entity\Product;
 use Liior\Faker\Prices;
 use App\Entity\Category;
 use App\Entity\Purchase;
+use App\Entity\PurchaseItem;
 use Bezhanov\Faker\Provider\Commerce;
 use Bluemmb\Faker\PicsumPhotosProvider;
 use Doctrine\Persistence\ObjectManager;
@@ -33,6 +34,7 @@ class AppFixtures extends Fixture
 		$faker->addProvider(new \Bezhanov\Faker\Provider\Commerce($faker));
 		$faker->addProvider(new \Bluemmb\Faker\PicsumPhotosProvider($faker));
 
+		// Création d'un utilisateur avec le ROLE_ADMIN
 		$admin = new User();
 
 		$hash = $this->encoder->encodePassword($admin, "password");
@@ -44,6 +46,7 @@ class AppFixtures extends Fixture
 
 		$manager->persist($admin);
 
+		// Création de 5 utilisateurs avec le ROLE_USER par défaut
 		$users = [];
 
 		for($u = 0; $u < 5; $u++)
@@ -70,6 +73,7 @@ class AppFixtures extends Fixture
 
 			$manager->persist($category);
 
+			$products = [];
 			// Pour chaque catégorie, création de 15 à 20 produits
 			for ($p = 0; $p < mt_rand(15,20); $p++)
 			{
@@ -81,12 +85,15 @@ class AppFixtures extends Fixture
 					->setShortDescription($faker->paragraph())
 					->setPicture($faker->imageUrl(400, 400, true));
 				
+				$products[] = $product;
+				
 				$manager->persist($product);
 			}
 		}
 
 		for($p = 0; $p < mt_rand(20, 40); $p++)
 		{
+			// Création d'une commande associée aléatoirement à un de nos utilisateurs précédemment créé
 			$purchase = new Purchase();
 
 			$purchase->setFullName($faker->name())
@@ -97,6 +104,26 @@ class AppFixtures extends Fixture
 				->setTotal(mt_rand(2000, 3000))
 				->setPurchasedAt($faker->dateTimeBetween('-6 months'));
 
+			// Sélection de 3 à 5 produits au hasard
+			$selectedProducts = $faker->randomElements($products, mt_rand(3, 5));
+
+			// Pour chaque produit, nous créons une ligne de commande liée au produit et à une commande
+			foreach($selectedProducts as $product)
+			{
+				$purchaseItem = new PurchaseItem();
+				$purchaseItem->setProduct($product)
+					->setQuantity(mt_rand(1, 3))
+					->setProductName($product->getName())
+					->setProductPrice($product->getPrice())
+					->setTotal(
+						$purchaseItem->getProductPrice() * $purchaseItem->getQuantity()
+					)
+					->setPurchase($purchase);
+
+				$manager->persist($purchaseItem);	
+			}
+
+			// On définit le statut des commandes aléatoirement
 			if($faker->boolean(90))
 			{
 				$purchase->setStatus(Purchase::STATUS_PAID);

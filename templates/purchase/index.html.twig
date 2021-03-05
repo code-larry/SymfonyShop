@@ -13,6 +13,7 @@
 				<th>Numéro</th>
 				<th>Adresse</th>
 				<th>Date de commande</th>
+				<th>Produit</th>
 				<th>Total</th>
 			</tr>
 		</thead>
@@ -22,6 +23,13 @@
 					<td>{{ p.id }}</td>
 					<td>{{ p.address }}<br>{{ p.postalCode }}, {{ p.city }}</td>
 					<td>{{ p.purchasedAt | date('d/m/y H:i') }}</td>
+					<td>
+						<ul>
+							{% for item in p.purchaseItems %}
+								<li>{{ item.quantity }}x {{ item.product.name }} ({{ item.total / 100 }} &euro;)</li>
+							{% endfor %}
+						</ul>
+					</td>
 					<td>{{ p.total / 100 }} &euro;</td>
 				</tr>
 			{% endfor %}
