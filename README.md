@@ -38,3 +38,21 @@ Eventually, you can load fixtures if you wish to populate your database:
 `php bin/console doctrine:fixtures:load`
 
 To use Stripe, you need to create your own account and get your public and secret key.
+
+## If you wish to test 
+
+As the registration feature is not available yet, you can use the following credentials:
+
+["ROLE_ADMIN"]
+
+username: admin@gmail.com
+
+password: password
+
+OR
+
+["ROLE_USER"]
+
+username: user0@gmail.com
+
+password: password
